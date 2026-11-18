@@ -1,0 +1,14 @@
+$ python bloqueador_cassino.py --arquivo exemplos/registros_exemplo.json
+23 registros analisados, 12 suspeitos.
+  BLOQUEARIA: 3c7rj5as.com  (nota 4: letras+números curtos, letras e números misturados, poucas vogais (20%), apareceu junto de cassino conhecido)
+  BLOQUEARIA: 6-q-r-s.com  (nota 4: padrão a-b-c-8, apareceu junto de cassino conhecido)
+  BLOQUEARIA: 6wpbr245.com  (nota 4: letras+números curtos, letras e números misturados, poucas vogais (0%), apareceu junto de cassino conhecido)
+  BLOQUEARIA: a-b-c-8.com  (nota 4: padrão a-b-c-8, apareceu junto de cassino conhecido)
+  BLOQUEARIA: i2grqngt.com  (nota 4: letras+números curtos, letras e números misturados, poucas vogais (14%), apareceu junto de cassino conhecido)
+  BLOQUEARIA: l1k4hbx.com  (nota 4: letras+números curtos, letras e números misturados, poucas vogais (0%), apareceu junto de cassino conhecido)
+  BLOQUEARIA: l7alpn8c.com  (nota 4: letras+números curtos, letras e números misturados, poucas vogais (17%), apareceu junto de cassino conhecido)
+  BLOQUEARIA: o1p8xfx.com  (nota 4: letras+números curtos, letras e números misturados, poucas vogais (20%), apareceu junto de cassino conhecido)
+  BLOQUEARIA: rlz5ry8e.com  (nota 4: letras+números curtos, letras e números misturados, poucas vogais (17%), apareceu junto de cassino conhecido)
+  BLOQUEARIA: z6u2ybx.com  (nota 4: letras+números curtos, letras e números misturados, poucas vogais (20%), apareceu junto de cassino conhecido)
+  BLOQUEARIA: zv3p03tf.com  (nota 4: letras+números curtos, letras e números misturados, poucas vogais (0%), apareceu junto de cassino conhecido)
+  BLOQUEARIA: uhrsgh91.com  (nota 3: letras+números curtos, poucas vogais (17%), apareceu junto de cassino conhecido)

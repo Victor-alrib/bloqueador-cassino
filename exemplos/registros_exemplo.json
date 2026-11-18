@@ -1,0 +1,125 @@
+{
+ "_descricao": "Registros de exemplo. Os domínios de cassino são reais, observados em registros do NextDNS; os domínios legítimos, a data e os horários são ilustrativos.",
+ "lista_negra": [
+  "x8s9m0q.com",
+  "r8x1m4k.com",
+  "j51l4gn.com"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-01-01T12:00:00.000Z",
+   "domain": "api5.a-b-c-8.com",
+   "status": "default"
+  },
+  {
+   "timestamp": "2026-01-01T12:00:05.000Z",
+   "domain": "uhrsgh91.com",
+   "status": "default"
+  },
+  {
+   "timestamp": "2026-01-01T12:00:08.000Z",
+   "domain": "3c7rj5as.com",
+   "status": "blocked"
+  },
+  {
+   "timestamp": "2026-01-01T12:00:09.000Z",
+   "domain": "zv3p03tf.com",
+   "status": "blocked"
+  },
+  {
+   "timestamp": "2026-01-01T12:00:11.000Z",
+   "domain": "rlz5ry8e.com",
+   "status": "blocked"
+  },
+  {
+   "timestamp": "2026-01-01T12:00:12.000Z",
+   "domain": "i2grqngt.com",
+   "status": "blocked"
+  },
+  {
+   "timestamp": "2026-01-01T12:00:14.000Z",
+   "domain": "6wpbr245.com",
+   "status": "blocked"
+  },
+  {
+   "timestamp": "2026-01-01T12:00:15.000Z",
+   "domain": "kamja7.l7alpn8c.com",
+   "status": "blocked"
+  },
+  {
+   "timestamp": "2026-01-01T12:00:20.000Z",
+   "domain": "searchnotifications-pa.googleapis.com",
+   "status": "default"
+  },
+  {
+   "timestamp": "2026-01-01T12:00:25.000Z",
+   "domain": "www.youtube.com",
+   "status": "default"
+  },
+  {
+   "timestamp": "2026-01-01T12:00:30.000Z",
+   "domain": "geller-pa.googleapis.com",
+   "status": "default"
+  },
+  {
+   "timestamp": "2026-01-01T12:02:00.000Z",
+   "domain": "l1k4hbx.com",
+   "status": "default"
+  },
+  {
+   "timestamp": "2026-01-01T12:02:01.000Z",
+   "domain": "z6u2ybx.com",
+   "status": "blocked"
+  },
+  {
+   "timestamp": "2026-01-01T12:02:05.000Z",
+   "domain": "safebrowsing.google.com",
+   "status": "default"
+  },
+  {
+   "timestamp": "2026-01-01T12:02:06.000Z",
+   "domain": "o1p8xfx.com",
+   "status": "blocked"
+  },
+  {
+   "timestamp": "2026-01-01T12:02:08.000Z",
+   "domain": "game-logo.6-q-r-s.com",
+   "status": "default"
+  },
+  {
+   "timestamp": "2026-01-01T12:03:20.000Z",
+   "domain": "x8s9m0q.com",
+   "status": "blocked"
+  },
+  {
+   "timestamp": "2026-01-01T12:03:30.000Z",
+   "domain": "r8x1m4k.com",
+   "status": "blocked"
+  },
+  {
+   "timestamp": "2026-01-01T12:03:40.000Z",
+   "domain": "j51l4gn.com",
+   "status": "blocked"
+  },
+  {
+   "timestamp": "2026-01-01T12:10:00.000Z",
+   "domain": "i.ytimg.com",
+   "status": "default"
+  },
+  {
+   "timestamp": "2026-01-01T12:15:00.000Z",
+   "domain": "connectivitycheck.gstatic.com",
+   "status": "default"
+  },
+  {
+   "timestamp": "2026-01-01T12:15:05.000Z",
+   "domain": "api.whatsapp.net",
+   "status": "default"
+  },
+  {
+   "timestamp": "2026-01-01T12:15:10.000Z",
+   "domain": "api.spotify.com",
+   "status": "default"
+  }
+ ]
+}

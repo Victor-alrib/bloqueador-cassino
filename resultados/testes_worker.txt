@@ -1,0 +1,75 @@
+
+> test
+> node --test test/worker.test.mjs
+
+TAP version 13
+# Secrets NEXTDNS_API_KEY e NEXTDNS_PROFILE não configurados: nada a fazer.
+# Subtest: notas idênticas às da versão Python (sozinho e junto de cassino)
+ok 1 - notas idênticas às da versão Python (sozinho e junto de cassino)
+  ---
+  duration_ms: 5.814603
+  type: 'test'
+  ...
+# Subtest: análise do registro de exemplo igual à da versão Python: 12 suspeitos
+ok 2 - análise do registro de exemplo igual à da versão Python: 12 suspeitos
+  ---
+  duration_ms: 0.839201
+  type: 'test'
+  ...
+# Subtest: domínio principal
+ok 3 - domínio principal
+  ---
+  duration_ms: 0.101335
+  type: 'test'
+  ...
+# Subtest: executar bloqueia os suspeitos
+ok 4 - executar bloqueia os suspeitos
+  ---
+  duration_ms: 0.497376
+  type: 'test'
+  ...
+# Subtest: modo teste não bloqueia nada
+ok 5 - modo teste não bloqueia nada
+  ---
+  duration_ms: 0.365827
+  type: 'test'
+  ...
+# Subtest: erro de API ou de rede num domínio não impede os outros
+ok 6 - erro de API ou de rede num domínio não impede os outros
+  ---
+  duration_ms: 0.400261
+  type: 'test'
+  ...
+# Subtest: cliente monta as requisições como a API do NextDNS espera
+ok 7 - cliente monta as requisições como a API do NextDNS espera
+  ---
+  duration_ms: 1.219987
+  type: 'test'
+  ...
+# Subtest: fetch é chamado sem `this`, como o runtime do Workers exige
+ok 8 - fetch é chamado sem `this`, como o runtime do Workers exige
+  ---
+  duration_ms: 19.256391
+  type: 'test'
+  ...
+# Subtest: erro HTTP da API vira exceção com o status
+ok 9 - erro HTTP da API vira exceção com o status
+  ---
+  duration_ms: 0.70903
+  type: 'test'
+  ...
+# Subtest: sem Secrets, o agendamento termina sem chamar a API
+ok 10 - sem Secrets, o agendamento termina sem chamar a API
+  ---
+  duration_ms: 0.966527
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 106.755437

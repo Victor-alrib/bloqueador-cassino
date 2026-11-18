@@ -1,0 +1,22 @@
+# Configuração do Worker para deploy com a Wrangler (CLI da Cloudflare):
+#   cd cloudflare
+#   npx wrangler login
+#   npx wrangler secret put NEXTDNS_API_KEY
+#   npx wrangler secret put NEXTDNS_PROFILE
+#   npx wrangler deploy
+name = "bloqueador-cassino"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+
+[triggers]
+crons = ["*/5 * * * *"]   # a cada 5 minutos (horário UTC)
+
+[vars]
+MODO_TESTE = "0"
+MINUTOS = "10"
+NOTA_MINIMA = "3"
+
+# Logs das execuções no painel da Cloudflare (Workers Logs), visíveis só
+# para o dono da conta.
+[observability]
+enabled = true

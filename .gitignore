@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Credenciais e registros reais do NextDNS (nunca versionar)
+.env
+.env.*
+registros_reais*.json
+logs_nextdns*
+
+# Editores / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

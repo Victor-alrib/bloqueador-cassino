@@ -1,0 +1,59 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python
+cachedir: .pytest_cache
+rootdir: bloqueador-cassino
+configfile: pytest.ini
+testpaths: tests
+plugins: platformdirs-4.13.5, anyio-4.15.1
+collecting ... collected 48 items
+
+tests/test_execucao.py::test_exemplo_real_pega_os_que_passaram PASSED    [  2%]
+tests/test_execucao.py::test_usa_dominio_principal_nao_o_subdominio PASSED [  4%]
+tests/test_execucao.py::test_correlacao_respeita_a_janela_de_3_minutos PASSED [  6%]
+tests/test_execucao.py::test_lista_negra_conta_como_cassino_conhecido PASSED [  8%]
+tests/test_execucao.py::test_registro_sem_horario_nao_quebra PASSED      [ 10%]
+tests/test_execucao.py::test_nota_minima_configuravel PASSED             [ 12%]
+tests/test_execucao.py::test_modo_teste_nao_bloqueia PASSED              [ 14%]
+tests/test_execucao.py::test_modo_real_bloqueia_cada_suspeito_uma_vez PASSED [ 16%]
+tests/test_execucao.py::test_erro_da_api_num_dominio_nao_para_os_outros PASSED [ 18%]
+tests/test_execucao.py::test_erro_de_rede_num_dominio_nao_para_os_outros PASSED [ 20%]
+tests/test_execucao.py::test_modo_arquivo PASSED                         [ 22%]
+tests/test_execucao.py::test_sem_credenciais_avisa_e_sai PASSED          [ 25%]
+tests/test_execucao.py::test_cliente_monta_requisicoes_corretas PASSED   [ 27%]
+tests/test_execucao.py::test_modo_silencioso_nao_revela_nada_do_perfil PASSED [ 29%]
+tests/test_execucao.py::test_modo_silencioso_avisa_erro_sem_dizer_o_dominio PASSED [ 31%]
+tests/test_execucao.py::test_log_detalhado_padrao[None-True] PASSED      [ 33%]
+tests/test_execucao.py::test_log_detalhado_padrao[1-True] PASSED         [ 35%]
+tests/test_execucao.py::test_log_detalhado_padrao[0-False] PASSED        [ 37%]
+tests/test_execucao.py::test_log_detalhado_padrao[ 0 -False] PASSED      [ 39%]
+tests/test_nota.py::test_dominio_principal[api5.a-b-c-8.com-a-b-c-8.com] PASSED [ 41%]
+tests/test_nota.py::test_dominio_principal[kamja7.l7alpn8c.com-l7alpn8c.com] PASSED [ 43%]
+tests/test_nota.py::test_dominio_principal[x8s9m0q.com-x8s9m0q.com] PASSED [ 45%]
+tests/test_nota.py::test_dominio_principal[www.nubank.com.br-nubank.com.br] PASSED [ 47%]
+tests/test_nota.py::test_dominio_principal[a.b.c.exemplo.org-exemplo.org] PASSED [ 50%]
+tests/test_nota.py::test_dominio_principal[GOOGLE.COM.-google.com] PASSED [ 52%]
+tests/test_nota.py::test_transicoes PASSED                               [ 54%]
+tests/test_nota.py::test_cassino_bloqueado_quando_aparece_junto_de_outro[x8s9m0q.com] PASSED [ 56%]
+tests/test_nota.py::test_cassino_bloqueado_quando_aparece_junto_de_outro[r8x1m4k.com] PASSED [ 58%]
+tests/test_nota.py::test_cassino_bloqueado_quando_aparece_junto_de_outro[j51l4gn.com] PASSED [ 60%]
+tests/test_nota.py::test_cassino_bloqueado_quando_aparece_junto_de_outro[uhrsgh91.com] PASSED [ 62%]
+tests/test_nota.py::test_cassino_bloqueado_quando_aparece_junto_de_outro[3c7rj5as.com] PASSED [ 64%]
+tests/test_nota.py::test_cassino_bloqueado_quando_aparece_junto_de_outro[zv3p03tf.com] PASSED [ 66%]
+tests/test_nota.py::test_cassino_bloqueado_quando_aparece_junto_de_outro[rlz5ry8e.com] PASSED [ 68%]
+tests/test_nota.py::test_cassino_bloqueado_quando_aparece_junto_de_outro[i2grqngt.com] PASSED [ 70%]
+tests/test_nota.py::test_cassino_bloqueado_quando_aparece_junto_de_outro[6wpbr245.com] PASSED [ 72%]
+tests/test_nota.py::test_cassino_bloqueado_quando_aparece_junto_de_outro[l7alpn8c.com] PASSED [ 75%]
+tests/test_nota.py::test_cassino_bloqueado_quando_aparece_junto_de_outro[l1k4hbx.com] PASSED [ 77%]
+tests/test_nota.py::test_cassino_bloqueado_quando_aparece_junto_de_outro[z6u2ybx.com] PASSED [ 79%]
+tests/test_nota.py::test_cassino_bloqueado_quando_aparece_junto_de_outro[o1p8xfx.com] PASSED [ 81%]
+tests/test_nota.py::test_cassino_bloqueado_quando_aparece_junto_de_outro[a-b-c-8.com] PASSED [ 83%]
+tests/test_nota.py::test_cassino_bloqueado_quando_aparece_junto_de_outro[6-q-r-s.com] PASSED [ 85%]
+tests/test_nota.py::test_cassino_sozinho_14_de_15 PASSED                 [ 87%]
+tests/test_nota.py::test_padrao_hifen_basta_sozinho PASSED               [ 89%]
+tests/test_nota.py::test_falsos_positivos_na_lista_de_legitimos PASSED   [ 91%]
+tests/test_nota.py::test_dominio_comum_nunca_ganha_ponto_por_estar_perto PASSED [ 93%]
+tests/test_nota.py::test_tld_fora_da_lista_nao_e_analisado PASSED        [ 95%]
+tests/test_nota.py::test_nunca_bloquear PASSED                           [ 97%]
+tests/test_paridade.py::test_esperado_json_esta_atualizado PASSED        [100%]
+
+============================== 48 passed in 0.08s ==============================

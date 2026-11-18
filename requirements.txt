@@ -1,0 +1,2 @@
+# O bloqueador usa só a biblioteca padrão do Python (3.10+).
+# Nenhuma dependência para rodar.
