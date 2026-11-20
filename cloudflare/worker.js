@@ -32,6 +32,9 @@ const SUFIXOS_DUPLOS = new Set(["com.br", "net.br", "org.br", "gov.br", "co.uk",
 const VOGAIS = new Set("aeiou");
 const PADRAO_HIFEN = /^(?:[a-z0-9]-){2,}[a-z0-9]$/; // a-b-c-8, 6-q-r-s
 const PADRAO_CURTO = /^[a-z0-9]{6,10}$/;            // x8s9m0q
+// x5w3.scmand.com: algum rótulo do prefixo ("x5w3.") é letra-número-letra-número
+const PADRAO_SUBDOMINIO_NO_PREFIXO = /(?:^|\.)[a-z][0-9][a-z][0-9]\./;
+const PADRAO_SO_NUMEROS = /^[0-9]{5,8}$/;           // 856552.com
 const JANELA_MS = 180 * 1000; // "apareceu junto" = até 3 min de um cassino conhecido
 
 const ehDigito = (c) => c >= "0" && c <= "9";
@@ -65,14 +68,21 @@ function percentual(x) {
   return `${r}%`;
 }
 
-/** Nota de suspeita de um domínio e os motivos de cada ponto. */
-export function nota(dominio, pertoDeCassino = false) {
-  dominio = dominioPrincipal(dominio);
-  if (NUNCA_BLOQUEAR.has(dominio)) return [0, ["lista NUNCA_BLOQUEAR"]];
+const MOTIVO_SUBDOMINIO = "subdomínio letra-número-letra-número";
+const limparPontas = (d) => {
+  const s = String(d || "").toLowerCase();
+  return s.startsWith(".") || s.endsWith(".") ? s.replace(/^\.+|\.+$/g, "") : s;
+};
+
+/** Pontos do nome principal ('scmand.com'), sem subdomínio nem horário. */
+function notaDoNome(dominio) {
+  if (NUNCA_BLOQUEAR.has(dominio)) return { pontos: 0, motivos: ["lista NUNCA_BLOQUEAR"], analisado: false };
   const i = dominio.lastIndexOf(".");
   const nome = i >= 0 ? dominio.slice(0, i) : "";
   const tld = i >= 0 ? dominio.slice(i + 1) : dominio;
-  if (!TLDS_ANALISADOS.has(tld) || nome.includes(".")) return [0, [`.${tld} não analisado`]];
+  if (!TLDS_ANALISADOS.has(tld) || nome.includes(".")) {
+    return { pontos: 0, motivos: [`.${tld} não analisado`], analisado: false };
+  }
 
   let pontos = 0;
   const motivos = [];
@@ -97,9 +107,45 @@ export function nota(dominio, pertoDeCassino = false) {
     }
   }
 
+  // Sozinhas, esta e a do subdomínio valem 2 e só bloqueiam junto de um
+  // cassino conhecido.
+  if (PADRAO_SO_NUMEROS.test(nome)) {
+    pontos += 2;
+    motivos.push("nome só com números");
+  }
+  return { pontos, motivos, analisado: true };
+}
+
+/** 'x5w3.scmand.com' -> true: algum subdomínio é letra-número-letra-número. */
+function subdominioSuspeito(completo, principal) {
+  const prefixo = completo.slice(0, completo.length - principal.length); // "x5w3."
+  return prefixo.length > 0 && PADRAO_SUBDOMINIO_NO_PREFIXO.test(prefixo);
+}
+
+/** Junta a nota do nome principal com a do subdomínio. */
+function notaSemHorario(completo, notaDoPrincipal, principalConhecido) {
+  // O principal vindo do registro ("root") evita refazer o split, mas só vale
+  // se for mesmo o final do endereço.
+  const principal = principalConhecido && !SUFIXOS_DUPLOS.has(principalConhecido) &&
+    (completo === principalConhecido || completo.endsWith(`.${principalConhecido}`))
+    ? principalConhecido
+    : dominioPrincipal(completo);
+  const base = notaDoPrincipal(principal);
+  if (!base.analisado) return [0, base.motivos];
+  if (!subdominioSuspeito(completo, principal)) return [base.pontos, base.motivos];
+  return [base.pontos + 2, [...base.motivos, MOTIVO_SUBDOMINIO]];
+}
+
+/**
+ * Nota de suspeita de um domínio e os motivos de cada ponto. Aceita o
+ * endereço completo ('x5w3.scmand.com'): o nome principal e os subdomínios
+ * contam pontos; o bloqueio é sempre do domínio principal.
+ */
+export function nota(dominio, pertoDeCassino = false) {
+  let [pontos, motivos] = notaSemHorario(limparPontas(dominio), notaDoNome);
   if (pertoDeCassino && pontos > 0) {
     pontos += 1;
-    motivos.push("apareceu junto de cassino conhecido");
+    motivos = [...motivos, "apareceu junto de cassino conhecido"];
   }
   return [pontos, motivos];
 }
@@ -110,25 +156,42 @@ function horario(entrada) {
 }
 
 const principalDaEntrada = (e) => dominioPrincipal((e && (e.root || e.domain)) || "");
+// Endereço completo do registro (com subdomínio), em minúsculas.
+const dominioDaEntrada = (e) => limparPontas(e && (e.domain || e.root));
 
 /** Domínios dos registros que devem ir para a Lista negra (função pura). */
 export function analisar(logs, listaNegra, notaMinima = 3) {
   const negra = new Set([...listaNegra].map((d) => d.toLowerCase()));
 
-  // Cada domínio se repete muito nos registros: a nota base é calculada uma
-  // vez só. A nota "junto de cassino" é a base + 1 quando a base é > 0.
+  // O mesmo endereço se repete muito nos registros: domínio principal e nota
+  // base saem de um cache pela dupla (domain, root). A nota do nome principal
+  // (a parte cara) tem cache próprio, compartilhado entre subdomínios.
+  // A nota "junto de cassino" é a base + 1 quando a base é > 0.
+  const cacheNome = new Map();
+  const notaDoPrincipal = (d) => {
+    let r = cacheNome.get(d);
+    if (r === undefined) cacheNome.set(d, (r = notaDoNome(d)));
+    return r;
+  };
   const cache = new Map();
-  const notaBase = (d) => {
-    if (!cache.has(d)) cache.set(d, nota(d));
-    return cache.get(d);
+  const info = (e) => {
+    const chave = `${e && e.domain}|${e && e.root}`;
+    let r = cache.get(chave);
+    if (r === undefined) {
+      const principal = principalDaEntrada(e);
+      const [base, motivos] = notaSemHorario(dominioDaEntrada(e), notaDoPrincipal, principal);
+      cache.set(chave, (r = { principal, base, motivos, negra: negra.has(principal) }));
+    }
+    return r;
   };
 
   const momentosCassino = [];
   for (const e of logs) {
-    const principal = principalDaEntrada(e);
-    const conhecido = negra.has(principal) || (e.status === "blocked" && notaBase(principal)[0] >= 2);
-    const t = horario(e);
-    if (conhecido && t !== null) momentosCassino.push(t);
+    const r = info(e);
+    if (r.negra || (e.status === "blocked" && r.base >= 2)) {
+      const t = horario(e);
+      if (t !== null) momentosCassino.push(t);
+    }
   }
   // Busca binária no vetor ordenado: mantém a execução dentro dos 10 ms de
   // CPU do plano gratuito mesmo com milhares de registros.
@@ -145,9 +208,8 @@ export function analisar(logs, listaNegra, notaMinima = 3) {
 
   const melhores = new Map();
   for (const e of logs) {
-    const principal = principalDaEntrada(e);
-    if (!principal || negra.has(principal)) continue;
-    const [base, motivosBase] = notaBase(principal);
+    const { principal, base, motivos: motivosBase, negra: naLista } = info(e);
+    if (!principal || naLista) continue;
     if (base + 1 < notaMinima) continue; // nem com o ponto extra chegaria lá
     const junto = base > 0 && perto(horario(e));
     const n = junto ? base + 1 : base;

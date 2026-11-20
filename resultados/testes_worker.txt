@@ -7,69 +7,75 @@ TAP version 13
 # Subtest: notas idênticas às da versão Python (sozinho e junto de cassino)
 ok 1 - notas idênticas às da versão Python (sozinho e junto de cassino)
   ---
-  duration_ms: 5.814603
+  duration_ms: 4.772697
   type: 'test'
   ...
 # Subtest: análise do registro de exemplo igual à da versão Python: 12 suspeitos
 ok 2 - análise do registro de exemplo igual à da versão Python: 12 suspeitos
   ---
-  duration_ms: 0.839201
+  duration_ms: 0.765622
+  type: 'test'
+  ...
+# Subtest: análise com subdomínios é idêntica à do Python
+ok 3 - análise com subdomínios é idêntica à do Python
+  ---
+  duration_ms: 0.164343
   type: 'test'
   ...
 # Subtest: domínio principal
-ok 3 - domínio principal
+ok 4 - domínio principal
   ---
-  duration_ms: 0.101335
+  duration_ms: 0.081728
   type: 'test'
   ...
 # Subtest: executar bloqueia os suspeitos
-ok 4 - executar bloqueia os suspeitos
+ok 5 - executar bloqueia os suspeitos
   ---
-  duration_ms: 0.497376
+  duration_ms: 0.477899
   type: 'test'
   ...
 # Subtest: modo teste não bloqueia nada
-ok 5 - modo teste não bloqueia nada
+ok 6 - modo teste não bloqueia nada
   ---
-  duration_ms: 0.365827
+  duration_ms: 0.291451
   type: 'test'
   ...
 # Subtest: erro de API ou de rede num domínio não impede os outros
-ok 6 - erro de API ou de rede num domínio não impede os outros
+ok 7 - erro de API ou de rede num domínio não impede os outros
   ---
-  duration_ms: 0.400261
+  duration_ms: 1.610079
   type: 'test'
   ...
 # Subtest: cliente monta as requisições como a API do NextDNS espera
-ok 7 - cliente monta as requisições como a API do NextDNS espera
+ok 8 - cliente monta as requisições como a API do NextDNS espera
   ---
-  duration_ms: 1.219987
+  duration_ms: 1.146198
   type: 'test'
   ...
 # Subtest: fetch é chamado sem `this`, como o runtime do Workers exige
-ok 8 - fetch é chamado sem `this`, como o runtime do Workers exige
+ok 9 - fetch é chamado sem `this`, como o runtime do Workers exige
   ---
-  duration_ms: 19.256391
+  duration_ms: 17.486856
   type: 'test'
   ...
 # Subtest: erro HTTP da API vira exceção com o status
-ok 9 - erro HTTP da API vira exceção com o status
+ok 10 - erro HTTP da API vira exceção com o status
   ---
-  duration_ms: 0.70903
+  duration_ms: 0.905201
   type: 'test'
   ...
 # Subtest: sem Secrets, o agendamento termina sem chamar a API
-ok 10 - sem Secrets, o agendamento termina sem chamar a API
+ok 11 - sem Secrets, o agendamento termina sem chamar a API
   ---
-  duration_ms: 0.966527
+  duration_ms: 0.795292
   type: 'test'
   ...
-1..10
-# tests 10
+1..11
+# tests 11
 # suites 0
-# pass 10
+# pass 11
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 106.755437
+# duration_ms 102.919583

@@ -61,6 +61,8 @@ SUFIXOS_DUPLOS = {"com.br", "net.br", "org.br", "gov.br", "co.uk", "com.ar"}
 VOGAIS = set("aeiou")
 PADRAO_HIFEN = re.compile(r"^(?:[a-z0-9]-){2,}[a-z0-9]$")   # a-b-c-8, 6-q-r-s
 PADRAO_CURTO = re.compile(r"^[a-z0-9]{6,10}$")              # x8s9m0q
+PADRAO_SUBDOMINIO = re.compile(r"^[a-z][0-9][a-z][0-9]$")   # x5w3.scmand.com
+PADRAO_SO_NUMEROS = re.compile(r"^[0-9]{5,8}$")             # 856552.com
 
 JANELA_SEGUNDOS = 180  # "apareceu junto" = até 3 min de um cassino conhecido
 
@@ -81,8 +83,14 @@ def transicoes_letra_numero(nome: str) -> int:
 
 
 def nota(dominio: str, perto_de_cassino: bool = False) -> tuple[int, list[str]]:
-    """Nota de suspeita de um domínio principal e os motivos de cada ponto."""
-    dominio = dominio_principal(dominio)
+    """Nota de suspeita de um domínio e os motivos de cada ponto.
+
+    Aceita o endereço completo ('x5w3.scmand.com'): o nome principal e os
+    subdomínios contam pontos; o bloqueio é sempre do domínio principal.
+    """
+    completo = dominio.lower().strip(".")
+    dominio = dominio_principal(completo)
+    subdominios = completo[: -len(dominio)].strip(".").split(".") if completo != dominio else []
     if dominio in NUNCA_BLOQUEAR:
         return 0, ["lista NUNCA_BLOQUEAR"]
     nome, _, tld = dominio.rpartition(".")
@@ -107,6 +115,14 @@ def nota(dominio: str, perto_de_cassino: bool = False) -> tuple[int, list[str]]:
             pontos += 1
             motivos.append(f"poucas vogais ({prop_vogais:.0%})")
 
+    # Sozinhas, estas valem 2 e só bloqueiam junto de um cassino conhecido.
+    if PADRAO_SO_NUMEROS.match(nome):
+        pontos += 2
+        motivos.append("nome só com números")
+    if any(PADRAO_SUBDOMINIO.match(s) for s in subdominios):
+        pontos += 2
+        motivos.append("subdomínio letra-número-letra-número")
+
     if perto_de_cassino and pontos > 0:
         pontos += 1
         motivos.append("apareceu junto de cassino conhecido")
@@ -130,6 +146,11 @@ def _horario(entrada: dict) -> datetime | None:
         return None
 
 
+def _dominio_da_entrada(entrada: dict) -> str:
+    """Endereço completo do registro (com subdomínio), em minúsculas."""
+    return (entrada.get("domain") or entrada.get("root") or "").lower().strip(".")
+
+
 def _principal_da_entrada(entrada: dict) -> str:
     return dominio_principal(entrada.get("root") or entrada.get("domain") or "")
 
@@ -147,7 +168,7 @@ def analisar(logs: list[dict], lista_negra: set[str],
     for e in logs:
         principal = _principal_da_entrada(e)
         conhecido = principal in lista_negra or (
-            e.get("status") == "blocked" and nota(principal)[0] >= 2)
+            e.get("status") == "blocked" and nota(_dominio_da_entrada(e))[0] >= 2)
         t = _horario(e)
         if conhecido and t:
             momentos_cassino.append(t)
@@ -161,7 +182,7 @@ def analisar(logs: list[dict], lista_negra: set[str],
         principal = _principal_da_entrada(e)
         if not principal or principal in lista_negra:
             continue
-        n, motivos = nota(principal, perto(_horario(e)))
+        n, motivos = nota(_dominio_da_entrada(e), perto(_horario(e)))
         if n >= nota_minima and (principal not in melhores or n > melhores[principal].nota):
             melhores[principal] = Suspeito(principal, n, motivos)
     return sorted(melhores.values(), key=lambda s: (-s.nota, s.dominio))

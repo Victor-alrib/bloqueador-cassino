@@ -23,6 +23,12 @@ test("análise do registro de exemplo igual à da versão Python: 12 suspeitos",
   assert.equal(r.length, 12);
 });
 
+test("análise com subdomínios é idêntica à do Python", () => {
+  const r = analisar(esperado.registros_subdominio, new Set());
+  assert.deepEqual(r.map((s) => [s.dominio, s.nota, s.motivos]), esperado.analise_subdominio);
+  assert.deepEqual(r.map((s) => s.dominio), ["856552.com", "j5swonwsss.com", "scmand.com"]);
+});
+
 test("domínio principal", () => {
   assert.equal(dominioPrincipal("api5.a-b-c-8.com"), "a-b-c-8.com");
   assert.equal(dominioPrincipal("x.y.com.br"), "y.com.br");

@@ -2403,6 +2403,232 @@
      ". não analisado"
     ]
    ]
+  },
+  "u5l1.856552.com": {
+   "sozinho": [
+    4,
+    [
+     "nome só com números",
+     "subdomínio letra-número-letra-número"
+    ]
+   ],
+   "junto": [
+    5,
+    [
+     "nome só com números",
+     "subdomínio letra-número-letra-número",
+     "apareceu junto de cassino conhecido"
+    ]
+   ]
+  },
+  "x5w3.scmand.com": {
+   "sozinho": [
+    2,
+    [
+     "subdomínio letra-número-letra-número"
+    ]
+   ],
+   "junto": [
+    3,
+    [
+     "subdomínio letra-número-letra-número",
+     "apareceu junto de cassino conhecido"
+    ]
+   ]
+  },
+  "q3d2.wjyai.com": {
+   "sozinho": [
+    2,
+    [
+     "subdomínio letra-número-letra-número"
+    ]
+   ],
+   "junto": [
+    3,
+    [
+     "subdomínio letra-número-letra-número",
+     "apareceu junto de cassino conhecido"
+    ]
+   ]
+  },
+  "r9l4.c6p4d5c6.com": {
+   "sozinho": [
+    5,
+    [
+     "letras+números curtos",
+     "letras e números misturados",
+     "poucas vogais (0%)",
+     "subdomínio letra-número-letra-número"
+    ]
+   ],
+   "junto": [
+    6,
+    [
+     "letras+números curtos",
+     "letras e números misturados",
+     "poucas vogais (0%)",
+     "subdomínio letra-número-letra-número",
+     "apareceu junto de cassino conhecido"
+    ]
+   ]
+  },
+  "k9d4.t9v3k7o5.com": {
+   "sozinho": [
+    4,
+    [
+     "letras+números curtos",
+     "letras e números misturados",
+     "subdomínio letra-número-letra-número"
+    ]
+   ],
+   "junto": [
+    5,
+    [
+     "letras+números curtos",
+     "letras e números misturados",
+     "subdomínio letra-número-letra-número",
+     "apareceu junto de cassino conhecido"
+    ]
+   ]
+  },
+  "A5B6.Teste.COM": {
+   "sozinho": [
+    2,
+    [
+     "subdomínio letra-número-letra-número"
+    ]
+   ],
+   "junto": [
+    3,
+    [
+     "subdomínio letra-número-letra-número",
+     "apareceu junto de cassino conhecido"
+    ]
+   ]
+  },
+  "a1b2.c3d4.exemplo.com": {
+   "sozinho": [
+    2,
+    [
+     "subdomínio letra-número-letra-número"
+    ]
+   ],
+   "junto": [
+    3,
+    [
+     "subdomínio letra-número-letra-número",
+     "apareceu junto de cassino conhecido"
+    ]
+   ]
+  },
+  "ab12.exemplo.com": {
+   "sozinho": [
+    0,
+    []
+   ],
+   "junto": [
+    0,
+    []
+   ]
+  },
+  "a1b2c.exemplo.com": {
+   "sozinho": [
+    0,
+    []
+   ],
+   "junto": [
+    0,
+    []
+   ]
+  },
+  "static.ppcabt.com": {
+   "sozinho": [
+    0,
+    []
+   ],
+   "junto": [
+    0,
+    []
+   ]
+  },
+  "readaloud.googleapis.com": {
+   "sozinho": [
+    0,
+    []
+   ],
+   "junto": [
+    0,
+    []
+   ]
+  },
+  "connect.facebook.net": {
+   "sozinho": [
+    0,
+    []
+   ],
+   "junto": [
+    0,
+    []
+   ]
+  },
+  "163.com": {
+   "sozinho": [
+    0,
+    []
+   ],
+   "junto": [
+    0,
+    []
+   ]
+  },
+  "1234.com": {
+   "sozinho": [
+    0,
+    []
+   ],
+   "junto": [
+    0,
+    []
+   ]
+  },
+  "12345.com": {
+   "sozinho": [
+    2,
+    [
+     "nome só com números"
+    ]
+   ],
+   "junto": [
+    3,
+    [
+     "nome só com números",
+     "apareceu junto de cassino conhecido"
+    ]
+   ]
+  },
+  "123456789.com": {
+   "sozinho": [
+    0,
+    []
+   ],
+   "junto": [
+    0,
+    []
+   ]
+  },
+  "x5w3.12345.com.br": {
+   "sozinho": [
+    0,
+    [
+     ".br não analisado"
+    ]
+   ],
+   "junto": [
+    0,
+    [
+     ".br não analisado"
+    ]
+   ]
   }
  },
  "analise_exemplo": [
@@ -2518,6 +2744,67 @@
    [
     "letras+números curtos",
     "poucas vogais (17%)",
+    "apareceu junto de cassino conhecido"
+   ]
+  ]
+ ],
+ "registros_subdominio": [
+  {
+   "timestamp": "2026-11-20T14:00:00Z",
+   "domain": "ws.j5swonwsss.com",
+   "root": "j5swonwsss.com",
+   "status": "blocked"
+  },
+  {
+   "timestamp": "2026-11-20T14:01:00Z",
+   "domain": "u5l1.856552.com",
+   "root": "856552.com",
+   "status": "default"
+  },
+  {
+   "timestamp": "2026-11-20T14:01:30Z",
+   "domain": "x5w3.scmand.com",
+   "root": "scmand.com",
+   "status": "default"
+  },
+  {
+   "timestamp": "2026-11-20T14:20:00Z",
+   "domain": "q3d2.wjyai.com",
+   "root": "wjyai.com",
+   "status": "default"
+  },
+  {
+   "timestamp": "2026-11-20T14:20:10Z",
+   "domain": "connect.facebook.net",
+   "root": "facebook.net",
+   "status": "default"
+  }
+ ],
+ "analise_subdominio": [
+  [
+   "856552.com",
+   5,
+   [
+    "nome só com números",
+    "subdomínio letra-número-letra-número",
+    "apareceu junto de cassino conhecido"
+   ]
+  ],
+  [
+   "j5swonwsss.com",
+   4,
+   [
+    "letras+números curtos",
+    "letras e números misturados",
+    "poucas vogais (11%)",
+    "apareceu junto de cassino conhecido"
+   ]
+  ],
+  [
+   "scmand.com",
+   3,
+   [
+    "subdomínio letra-número-letra-número",
     "apareceu junto de cassino conhecido"
    ]
   ]

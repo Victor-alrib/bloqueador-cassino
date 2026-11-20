@@ -8,8 +8,8 @@ Ambiente: Python 3.13.18, pytest 9.1.1, Node 22.23.4, Linux. O resultado é dete
 
 | Arquivo | Conteúdo |
 |---|---|
-| `testes_pytest.txt` | Saída dos 48 testes em Python (pytest) |
-| `testes_worker.txt` | Saída dos 10 testes do Cloudflare Worker (`node:test`), incluindo a paridade com a versão em Python |
+| `testes_pytest.txt` | Saída dos 61 testes em Python (pytest) |
+| `testes_worker.txt` | Saída dos 11 testes do Cloudflare Worker (`node:test`), incluindo a paridade com a versão em Python |
 | `execucao_exemplo.txt` | Saída de `python bloqueador_cassino.py --arquivo exemplos/registros_exemplo.json` |
 | `avaliacao_dominios.txt` | Nota de cada um dos 15 domínios de cassino e dos 169 legítimos, sozinhos e "junto" de um cassino |
 

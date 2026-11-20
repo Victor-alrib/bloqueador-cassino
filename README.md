@@ -35,7 +35,7 @@ flowchart LR
 
 ### Nota de suspeita
 
-Só são analisados domínios terminados em `.com`, `.net`, `.top`, `.xyz`, `.vip` e outras terminações usadas por esses sites. A nota é calculada a partir do nome sem a terminação (`x8s9m0q`):
+Só são analisados domínios terminados em `.com`, `.net`, `.top`, `.xyz`, `.vip` e outras terminações usadas por esses sites. A nota é calculada a partir do nome sem a terminação (`x8s9m0q`) e dos subdomínios (`x5w3.` em `x5w3.scmand.com`):
 
 | Sinal | Pontos | Exemplo |
 |---|---|---|
@@ -43,9 +43,11 @@ Só são analisados domínios terminados em `.com`, `.net`, `.top`, `.xyz`, `.vi
 | 6 a 10 letras e números, com pelo menos um número | 1 | `uhrsgh91` |
 | Letras e números alternando 2 vezes ou mais | +1 | `x8s9m0q` |
 | Menos de 25 % de vogais entre as letras | +1 | `zv3p03tf` (0 %) |
+| Nome só com números, de 5 a 8 dígitos | 2 | `856552.com` |
+| Subdomínio de 4 caracteres letra-número-letra-número | 2 | `x5w3.scmand.com`, `q3d2.wjyai.com` |
 | Apareceu até 3 min de um domínio já na Lista negra ou já bloqueado pelo NextDNS | +1 | só soma se o nome já tiver algum ponto |
 
-Com nota **3 ou mais**, o domínio vai para a Lista negra. A correlação de horário existe porque o app consulta vários domínios em sequência: se um já foi reconhecido, os vizinhos com nome estranho quase certamente são do mesmo app.
+Com nota **3 ou mais**, o domínio vai para a Lista negra. Os dois sinais de 2 pontos, sozinhos, só bloqueiam junto de um cassino conhecido: são fortes nesse app, mas fracos demais para bloquear um site isolado. A correlação de horário existe porque o app consulta vários domínios em sequência: se um já foi reconhecido, os vizinhos com nome estranho quase certamente são do mesmo app.
 
 ### Decisões técnicas e por quê
 
@@ -53,12 +55,12 @@ Com nota **3 ou mais**, o domínio vai para a Lista negra. A correlação de hor
 |---|---|
 | Regras sobre o nome em vez de um modelo treinado | Havia só 15 domínios de cassino rotulados, pouco para treinar. As regras são explicáveis: cada bloqueio vem com os motivos |
 | Correlação de horário com cassinos conhecidos | Pega nomes menos óbvios, como `uhrsgh91.com`, sem baixar a nota mínima para todos |
-| Analisar o domínio principal, não o subdomínio | O app usa `api5.a-b-c-8.com`, `game-logo.6-q-r-s.com`. Bloquear o principal pega todos os subdomínios |
+| Bloquear o domínio principal, mas olhar também o subdomínio | O app usa `api5.a-b-c-8.com`, `game-logo.6-q-r-s.com`: bloquear o principal pega todos os subdomínios. Em alguns domínios o nome principal parece normal (`scmand.com`) e a pista está no subdomínio (`x5w3.`) |
 | Agendamento num Cloudflare Worker (*Cron Trigger*) | Grátis, sem servidor e sem computador ligado. As credenciais ficam nos *Secrets* da Cloudflare e os logs são privados |
-| Duas versões: Python (referência) e JavaScript (Worker) | O Worker roda JavaScript. Um teste de paridade compara as notas das duas versões em 196 domínios e na análise do exemplo, para que não divirjam |
+| Duas versões: Python (referência) e JavaScript (Worker) | O Worker roda JavaScript. Um teste de paridade compara as notas das duas versões em 213 domínios e em duas análises de registros, para que não divirjam |
 | Só biblioteca padrão do Python, sem dependências no Worker | Nada para instalar; o Worker usa só `fetch` |
 | `MODO_TESTE` | Permite ver o que seria bloqueado antes de bloquear de verdade |
-| Janela de 10 min a cada 5 min no Worker | Cada domínio é visto em duas rodadas seguidas, e a análise cabe com folga no limite de 10 ms de CPU do plano gratuito (7,8 ms com 10 mil registros) |
+| Janela de 10 min a cada 5 min no Worker | Cada domínio é visto em duas rodadas seguidas, e a análise cabe com folga no limite de 10 ms de CPU do plano gratuito: em uso real, cada janela teve de 34 a 93 registros, e 100 registros levam menos de 1 ms |
 | Lista `NUNCA_BLOQUEAR` | Saída simples para um falso positivo, sem mexer nas regras |
 | Erro num domínio não para os outros | Um limite de requisições da API ou uma falha de rede não pode impedir o bloqueio do restante |
 
@@ -69,7 +71,8 @@ Medidos com domínios reais desses apps, observados em registros do NextDNS. Det
 - **Domínios de cassino: 15 de 15 bloqueados** quando aparecem junto de outro cassino, que é como o app se comporta. Avaliados sozinhos, 14 de 15. O que escapa é `uhrsgh91.com`, que tem os números só no fim.
 - **Registro de exemplo** ([`exemplos/registros_exemplo.json`](exemplos/registros_exemplo.json), 23 consultas): o script marcou os **12** domínios de cassino que ainda não estavam na Lista negra, incluindo os 4 que o NextDNS tinha deixado passar. Nenhum domínio legítimo do mesmo registro foi marcado.
 - **Falsos positivos numa lista de 169 domínios legítimos**, montada com sites populares no Brasil e nomes difíceis de propósito (`bet365`, `4shared`, `w3schools`): **1** seria bloqueado sozinho (`web2py.com`). Se aberto até 3 min depois de um cassino, **5** seriam (`w3schools.com`, `mp3juices.com`, `mp4upload.com`, `web2py.com`, `ad4game.com`).
-- **58 testes automatizados, todos passando** (48 em Python e 10 do Worker em JavaScript), incluindo a montagem das requisições à API, o comportamento com erro e a paridade entre as duas versões.
+- **Domínios observados depois, em novembro de 2026:** `u5l1.856552.com`, `x5w3.scmand.com` e `q3d2.wjyai.com` vinham do mesmo app, mas passavam com nota 0. Eles motivaram os dois sinais de 2 pontos (nome só com números e subdomínio `x5w3`). Com eles, os três chegam a 3 ou mais junto de um cassino, e os domínios legítimos da lista continuam com os mesmos falsos positivos. Como foram usados para escrever as regras, não contam como avaliação independente.
+- **72 testes automatizados, todos passando** (61 em Python e 11 do Worker em JavaScript), incluindo a montagem das requisições à API, o comportamento com erro e a paridade entre as duas versões.
 
 > **Limite desta avaliação:** as regras foram escritas olhando estes mesmos 15 domínios, então o acerto em domínios novos tende a ser menor. O script ainda não foi medido rodando por vários dias contra um perfil real.
 
@@ -87,6 +90,8 @@ Medidos com domínios reais desses apps, observados em registros do NextDNS. Det
 4. Em **Settings → Trigger Events**, adicione um *Cron Trigger* `*/5 * * * *`.
 5. Pronto: a cada 5 minutos ele analisa os últimos 10 minutos de registros. O resultado de cada rodada aparece em **Observability → Logs**, visível só para você.
 
+Para o Worker se atualizar sozinho a cada mudança no repositório: em **Settings → Builds → Connect**, escolha este repositório, a branch `main`, a pasta `cloudflare` como *root directory* e `npx wrangler deploy` como comando de deploy.
+
 Pela linha de comando, com o [`wrangler.toml`](cloudflare/wrangler.toml) já pronto: `npx wrangler login`, `npx wrangler secret put NEXTDNS_API_KEY`, `npx wrangler secret put NEXTDNS_PROFILE` e `npx wrangler deploy`, dentro da pasta `cloudflare/`.
 
 Passo a passo completo, incluindo a configuração do celular: [`docs/MANUAL_DE_USO.md`](docs/MANUAL_DE_USO.md).
@@ -99,8 +104,8 @@ Pré-requisito: **Python 3.10+**. Não há dependências para rodar, só `pytest
 python bloqueador_cassino.py --arquivo exemplos/registros_exemplo.json   # sem API: 12 suspeitos
 
 pip install -r requirements-dev.txt
-python -m pytest                                                         # 48 passed
-cd cloudflare && npm test                                                # 10 pass (Node 18+)
+python -m pytest                                                         # 61 passed
+cd cloudflare && npm test                                                # 11 pass (Node 18+)
 ```
 
 Contra o seu perfil:
@@ -124,7 +129,8 @@ O repositório **não contém chave de API, ID de perfil nem registros reais com
 - **Só vê o que passa pelo DNS.** Um app que use IP fixo ou DNS próprio escapa de qualquer filtro de DNS. O bloqueio da instalação de apps fora da loja continua necessário.
 - Domínios de cassino com nome pronunciável (`cassinoboa.com`) não são reconhecidos pelo nome. Ficam para a categoria "Jogos de azar" e para a detecção por IA do NextDNS.
 - Falsos positivos medidos só numa lista de 169 domínios montada à mão; o uso real pode ter outros.
-- O plano gratuito da Cloudflare limita cada execução a 10 ms de CPU e 50 requisições. Com 10 mil registros em 10 minutos a análise leva 7,8 ms; um perfil com muito mais tráfego pode precisar de uma janela menor (`MINUTOS`). Se uma rodada passar do limite, a seguinte tenta de novo.
+- O plano gratuito da Cloudflare limita cada execução a 10 ms de CPU e 50 requisições. No Node.js, 10 mil registros em 10 minutos levam cerca de 9 ms, e passam de 10 ms se quase todos forem endereços diferentes; um perfil com tanto tráfego pode precisar de uma janela menor (`MINUTOS`). Se uma rodada passar do limite, a seguinte tenta de novo.
+- Os sinais de 2 pontos não bloqueiam sozinhos: um domínio como `wjyai.com`, aberto longe de qualquer cassino conhecido, passa.
 - A Lista negra só cresce; o script não remove entradas antigas.
 - Os testes usam a API simulada. O script já rodou contra um perfil real, mas ainda sem um registro de vários dias de uso.
 
